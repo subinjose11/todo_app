@@ -51,20 +51,13 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     SignInRequested event,
     Emitter<AuthState> emit,
   ) async {
-    print('DEBUG: Sign in requested for ${event.email}');
     emit(const AuthLoading());
     final result = await signIn(
       SignInParams(email: event.email, password: event.password),
     );
     result.fold(
-      (failure) {
-        print('DEBUG: Sign in FAILED - ${failure.message}');
-        emit(AuthError(message: failure.message));
-      },
-      (user) {
-        print('DEBUG: Sign in SUCCESS - ${user.email}');
-        emit(Authenticated(user: user));
-      },
+      (failure) => emit(AuthError(message: failure.message)),
+      (user) => emit(Authenticated(user: user)),
     );
   }
 

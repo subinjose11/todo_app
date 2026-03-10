@@ -26,9 +26,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    print('DEBUG: HomeScreen initState called');
     _initializeTasks();
-    print('DEBUG: HomeScreen _initializeTasks completed');
     _fabController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 300),

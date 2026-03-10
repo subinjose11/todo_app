@@ -52,29 +52,21 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     InitializeTasks event,
     Emitter<TaskState> emit,
   ) async {
-    print('DEBUG: TaskBloc _onInitializeTasks called for user: ${event.userId}');
     _userId = event.userId;
     emit(const TaskLoading());
 
-    print('DEBUG: Fetching ID token...');
     _idToken = await _fetchIdToken();
     if (_idToken == null) {
-      print('DEBUG: ID token is null, emitting error');
       emit(const TaskError(message: 'Failed to authenticate. Please sign in again.'));
       return;
     }
-    print('DEBUG: Got ID token, fetching tasks...');
 
     final result = await _getTasks(
       GetTasksParams(userId: _userId!, idToken: _idToken!),
     );
     result.fold(
-      (failure) {
-        print('DEBUG: Failed to get tasks: ${failure.message}');
-        emit(TaskError(message: failure.message));
-      },
+      (failure) => emit(TaskError(message: failure.message)),
       (tasks) {
-        print('DEBUG: Got ${tasks.length} tasks');
         _tasks = tasks;
         emit(TaskLoaded(tasks: tasks));
       },

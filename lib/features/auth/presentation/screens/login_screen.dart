@@ -72,9 +72,7 @@ class _LoginScreenState extends State<LoginScreen>
   Widget build(BuildContext context) {
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
-        print('DEBUG: LoginScreen AuthState changed to: $state');
         if (state is Authenticated) {
-          print('DEBUG: User authenticated, navigating to HomeScreen');
           Navigator.of(context).pushReplacement(
             PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
@@ -85,7 +83,6 @@ class _LoginScreenState extends State<LoginScreen>
             ),
           );
         } else if (state is AuthError) {
-          print('DEBUG: Auth error in LoginScreen: ${state.message}');
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
               content: Row(
